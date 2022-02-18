@@ -15,13 +15,13 @@ impl Attractor {
 
 impl Attract for Attractor {
     fn next(&self, x: f64, y: f64) -> (f64, f64) {
-        let xprime = (self.a * y).sin() + self.c * (self.a * x).cos();
-        let yprime = (self.b * x).sin() + self.d * (self.b * y).cos();
+        let xprime = (self.a * y).sin() - (self.b * x).cos();
+        let yprime = (self.c * x).sin() - (self.d * y).cos();
 
         return (xprime, yprime);
     }
 
     fn rmax(&self) -> f64 {
-        return (1.0 + self.c.abs()).max(1.0 + self.d.abs());
+        return 2.0;
     }
 }
