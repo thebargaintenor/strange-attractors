@@ -1,7 +1,7 @@
 use array2d::Array2D;
 use clap::{Args, Parser, Subcommand};
 
-use strange_attractors::{clifford, color, dejong, Attract};
+use strange_attractors::{clifford, color, dejong, ikeda, Attract, gumkowski_mira};
 
 #[derive(Parser)]
 #[clap(name = "strange-attractors")]
@@ -54,6 +54,27 @@ enum Attractors {
         #[clap(short)]
         d: f64,
     },
+    Ikeda {
+        #[clap(short)]
+        a: f64,
+
+        #[clap(short)]
+        b: f64,
+
+        #[clap(short)]
+        k: f64,
+
+        #[clap(short)]
+        p: f64,
+    },
+    /// requires a and b in 0 < x < 1
+    GumkowskiMira {
+        #[clap(short)]
+        a: f64,
+
+        #[clap(short)]
+        b: f64,
+    }
 }
 
 fn main() {
@@ -91,6 +112,8 @@ fn load_attractor(attractor_opts: Attractors) -> Box<dyn Attract> {
     match &attractor_opts {
         &Attractors::Clifford { a, b, c, d } => Box::new(clifford::Attractor::new(a, b, c, d)),
         &Attractors::DeJong { a, b, c, d } => Box::new(dejong::Attractor::new(a, b, c, d)),
+        &Attractors::Ikeda {a, b, k, p} => Box::new(ikeda::Attractor::new(a, b, k, p)),
+        &Attractors::GumkowskiMira { a, b } => Box::new(gumkowski_mira::Attractor::new(a, b)),
     }
 }
 
